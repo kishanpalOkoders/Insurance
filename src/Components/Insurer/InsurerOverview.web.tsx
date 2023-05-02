@@ -480,16 +480,16 @@ const InsurerOverview = (props: InsurerOverviewProps) => {
                         />
                         {
                             showErrorSegment ? (<FormHelperText component="div" style={{ flexGrow: 1, color: '#ff1943', }}>This field is required.</FormHelperText>) : null
-                        } */}
+                        } */} 
                         
                         <LabelWithIcon label='Segment' />
                         <MultiSelect
                          selectOptions={segmentDefaultOptions}
                         //  selectValue={props.formType === enumFormAction.EDIT ? props?.data?.segment : segment}
                          eventHandler={handleSegment}
-                        //  selectValue={props?.data?.segment}
+                        //  selectValue={props?.data?.segment} 
                          selectValue={props?.data?.segment}
-                         disable={(props.formType !== enumFormAction.EDIT || props.formType !== enumFormAction.ADD) || selectDisable}
+                         disable={(props.formType === enumFormAction.EDIT || props.formType !== enumFormAction.ADD) || selectDisable}
                          showError={showErrorSegment ? true : false }
                          />
                     </Grid>
