@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormHelperText, FormLabel, Grid, InputLabel, MenuItem, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -151,6 +151,7 @@ const InsurerOverview = (props: InsurerOverviewProps) => {
     const [showErrorTypesOfInsurance, setShowErrorTypesOfInsurance] = useState(false)
     const [open, setOpen] = useState(false);
     const [formValues, setFormValues] = useState<any>(null)
+    let stopMount = useRef(false);
 
     const initialValues = {
         // insurer_id: "",
@@ -174,19 +175,17 @@ const InsurerOverview = (props: InsurerOverviewProps) => {
             //      setTypes_of_insurance(props?.data['types_of_insurance'])
             // }
         }
-    }, [props.data])
+    }, [props?.data, props.formType])
       
     useEffect(() => {
-        let stopMount = 0;
-        if(stopMount){
+        if(stopMount.current){
             const finalValues:any = {...formValues}
             console.log("formValues :", formValues)
             // if(segment !== null || types_of_insurance !== null){
-                finalValues['segment'] = segment;
-                finalValues['types_of_insurance'] = types_of_insurance;
+                finalValues['types_of_insurance'] = types_of_insurance !== null ? types_of_insurance : props?.data?.types_of_insurance ;
+                finalValues['segment'] = segment !== null ? segment : props?.data?.segment;
                 props.insuranceTypes(finalValues)
             // }
-            stopMount++
         }
     }, [segment, types_of_insurance])
 
@@ -242,12 +241,14 @@ const InsurerOverview = (props: InsurerOverviewProps) => {
         // setTypesOfInsuranceValues((current:any) => [...current, item] )
         setTypes_of_insurance(selected,);
         setShowErrorTypesOfInsurance(false)
+        stopMount.current = true 
     }
 
     const handleSegment = (selected: any) => {
         // setSegmentValues((e.target as HTMLInputElement).value)
         setSegment(selected);
         setShowErrorSegment(false)
+        stopMount.current = true 
     }
 
     // const handleSelectChange = (selected:any) => {
@@ -487,9 +488,9 @@ const InsurerOverview = (props: InsurerOverviewProps) => {
                          selectOptions={segmentDefaultOptions}
                         //  selectValue={props.formType === enumFormAction.EDIT ? props?.data?.segment : segment}
                          eventHandler={handleSegment}
-                        //  selectValue={props?.data?.segment} 
+                        //  selectValue={props?.data?.segment}
                          selectValue={props?.data?.segment}
-                         disable={(props.formType === enumFormAction.EDIT || props.formType !== enumFormAction.ADD) || selectDisable}
+                         disable={props.formType === enumFormAction.VIEW ? true : false }
                          showError={showErrorSegment ? true : false }
                          />
                     </Grid>

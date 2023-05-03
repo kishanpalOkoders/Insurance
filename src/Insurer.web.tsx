@@ -3,6 +3,7 @@ import { makeStyles, createStyles, Grid, Button, TextField, Accordion, Accordion
 import { ArrowBackIosSharp, ExpandMore, MoreVert } from '@material-ui/icons';
 import TablePaginationActions from '@material-ui/core/TablePagination/TablePaginationActions';
 // import CustomDataTable from '/Components/CustomDataTable'
+import { createBrowserHistory } from 'history';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import CloseIcon from '@material-ui/icons/Close';
@@ -15,7 +16,6 @@ import Contact from './Components/Insurer/Contact.web'
 import UploadAttachedment from './Components/Insurer/UploadAttachedment.web'
 import LabelWithIcon from './Components/LabelWithIcon';
 import imageCompression from 'browser-image-compression';
-import { type } from 'os';
 import { Alert } from '@material-ui/lab';
 import ConfirmationDialog from './Components/ConfirmationDialog.web';
 
@@ -576,6 +576,10 @@ class Insurer extends Component<MyProps, MyState>{
     }
 
     componentDidMount(): void {
+        const Loc = createBrowserHistory()
+        const URLcheck = Loc.location.pathname;
+        console.log("adjakd :", Loc, URLcheck)
+
         if(this.props.formType !== enumFormAction.ADD){
             /* istanbul ignore next */
             this.viewSetStates()
@@ -963,7 +967,6 @@ handleCancelConfirmation = () => {
                 } 
                 
                 if(this.props.formType === enumFormAction.EDIT){
-                    debugger
                     formData.append(`data[${key}][${nestedKey}]`, nestedObj[nestedKey])  
                 }
             }
@@ -1405,3 +1408,4 @@ Insurer.propTypes = {
     changeEdit: PropTypes.string.isRequired,
 };
 export default withStyles(useStyles)(Insurer) 
+
